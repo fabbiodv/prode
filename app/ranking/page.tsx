@@ -283,13 +283,13 @@ export default async function RankingPage() {
                 <h3 className="font-semibold mb-2">🏆 Premios del Torneo</h3>
                 <div className="text-sm space-y-1">
                   <div>
-                    🥇 <strong>1er Lugar:</strong> $50.000 + Trofeo
+                    🥇 <strong>1er Lugar:</strong> $50.000
                   </div>
                   <div>
-                    🥈 <strong>2do Lugar:</strong> $30.000
+                    🥈 <strong>2do Lugar:</strong> .
                   </div>
                   <div>
-                    🥉 <strong>3er Lugar:</strong> $20.000
+                    🥉 <strong>3er Lugar:</strong> .
                   </div>
                 </div>
               </div>
