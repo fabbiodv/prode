@@ -168,7 +168,7 @@ export default async function MiProdePage() {
           <div className="w-full max-w-5xl flex justify-between items-center p-3 px-5 text-sm">
             <div className="flex gap-5 items-center font-semibold">
               <Link href={"/"}>Prode Flujin</Link>
-              <Link href={"/mi-prode"} className=" border rounded-full px-2 py-1">Mi Prode</Link>
+              <Link href={"/mi-prode"} className="border rounded-full px-2 py-1 bg-slate-500">Mi Prode</Link>
               <Link href={"/ranking"} className="">Ranking</Link>
             </div>
             {!hasEnvVars ? <EnvVarWarning /> : <AuthButton />}

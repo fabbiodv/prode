@@ -2,6 +2,10 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Crown, Medal, Trophy } from "lucide-react"
 import { createClient } from "@/lib/supabase/server"
+import { hasEnvVars } from "@/lib/utils"
+import { AuthButton } from "@/components/auth-button"
+import { EnvVarWarning } from "@/components/env-var-warning"
+import Link from "next/link"
 
 interface RankingUser {
   position: number
@@ -202,97 +206,110 @@ export default async function RankingPage() {
     }
 
     return (
-      <div className="min-h-screen">
-        <main className="container mx-auto px-4 py-6">
-          <div className="mb-8">
-            <h1 className="text-3xl font-bold mb-2 flex items-center space-x-2">
-              <Crown className="h-8 w-8" />
-              <span>Ranking General</span>
-            </h1>
-            <p className="">Clasificación de todos los participantes</p>
-          </div>
+      <div className="min-h-screen flex flex-col items-center">
+        <div className="flex-1 w-full flex flex-col gap-5 items-center">
+          <nav className="w-full flex justify-center border-b border-b-foreground/10 h-16">
+            <div className="w-full max-w-5xl flex justify-between items-center p-3 px-5 text-sm">
+              <div className="flex gap-5 items-center font-semibold">
+                <Link href={"/"}>Prode Flujin</Link>
+                <Link href={"/mi-prode"} className="">Mi Prode</Link>
+                <Link href={"/ranking"} className="border rounded-full px-2 py-1 bg-slate-500">Ranking</Link>
+              </div>
+              {!hasEnvVars ? <EnvVarWarning /> : <AuthButton />}
+            </div>
+          </nav>
+          <div className="flex-1 flex flex-col gap-20 max-w-5xl p-5">
+            <main className="container mx-auto px-4 py-6">
+              <div className="mb-8">
+                <h1 className="text-3xl font-bold mb-2 flex items-center space-x-2">
+                  <Crown className="h-8 w-8" />
+                  <span>Ranking General</span>
+                </h1>
+                <p className="">Clasificación de todos los participantes</p>
+              </div>
 
-          {ranking.length === 0 ? (
-            <Card>
-              <CardContent className="py-8">
-                <div className="text-center text-slate-500">
-                  <Trophy className="h-12 w-12 mx-auto mb-4 opacity-50" />
-                  <p>Aún no hay participantes en el ranking.</p>
-                  <p className="text-sm">¡Haz tus primeras predicciones para aparecer aquí!</p>
-                </div>
-              </CardContent>
-            </Card>
-          ) : (
-            <Card>
-              <CardHeader>
-                <CardTitle>Tabla de Posiciones</CardTitle>
-                <div className="text-sm text-slate-600">
-                  {ranking.length} participante{ranking.length !== 1 ? 's' : ''} en total
-                </div>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-2">
-                  {ranking.map((player) => (
-                    <div
-                      key={player.user_id}
-                      className={`flex items-center justify-between p-4 rounded-lg transition-colors`}
-                    >
-                      <div className="flex items-center space-x-4">
-                        <div className="flex items-center justify-center w-8 h-8">
-                          {getPositionIcon(player.position)}
-                        </div>
-                        <div>
-                          <div className="font-semibold">{player.first_name} {player.last_name}</div>
-                          <div className="text-sm text-slate-600">
-                            {player.exactPredictions} exactos • {player.partialPredictions} parciales • {player.totalPredictions} predicciones
+              {ranking.length === 0 ? (
+                <Card>
+                  <CardContent className="py-8">
+                    <div className="text-center text-slate-500">
+                      <Trophy className="h-12 w-12 mx-auto mb-4 opacity-50" />
+                      <p>Aún no hay participantes en el ranking.</p>
+                      <p className="text-sm">¡Haz tus primeras predicciones para aparecer aquí!</p>
+                    </div>
+                  </CardContent>
+                </Card>
+              ) : (
+                <Card>
+                  <CardHeader>
+                    <CardTitle>Tabla de Posiciones</CardTitle>
+                    <div className="text-sm text-slate-600">
+                      {ranking.length} participante{ranking.length !== 1 ? 's' : ''} en total
+                    </div>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="space-y-2">
+                      {ranking.map((player) => (
+                        <div
+                          key={player.user_id}
+                          className={`flex items-center justify-between p-4 rounded-lg transition-colors`}
+                        >
+                          <div className="flex items-center space-x-4">
+                            <div className="flex items-center justify-center w-8 h-8">
+                              {getPositionIcon(player.position)}
+                            </div>
+                            <div>
+                              <div className="font-semibold">{player.first_name} {player.last_name}</div>
+                              <div className="text-sm text-slate-600">
+                                {player.exactPredictions} exactos • {player.partialPredictions} parciales • {player.totalPredictions} predicciones
+                              </div>
+                            </div>
+                          </div>
+
+                          <div className="flex items-center space-x-3">
+                            <div className="text-right">
+                              <div className="text-2xl font-bold">{player.points}</div>
+                              <div className="text-xs text-slate-500">puntos</div>
+                            </div>
+                            {getPositionBadge(player.position)}
                           </div>
                         </div>
-                      </div>
-
-                      <div className="flex items-center space-x-3">
-                        <div className="text-right">
-                          <div className="text-2xl font-bold">{player.points}</div>
-                          <div className="text-xs text-slate-500">puntos</div>
-                        </div>
-                        {getPositionBadge(player.position)}
-                      </div>
+                      ))}
                     </div>
-                  ))}
+                  </CardContent>
+                </Card>
+              )}
+
+              <div className="mt-6 p-4 rounded-lg border">
+                <h3 className="font-semibold mb-2">🏆 Premios del Torneo</h3>
+                <div className="text-sm space-y-1">
+                  <div>
+                    🥇 <strong>1er Lugar:</strong> $50.000 + Trofeo
+                  </div>
+                  <div>
+                    🥈 <strong>2do Lugar:</strong> $30.000
+                  </div>
+                  <div>
+                    🥉 <strong>3er Lugar:</strong> $20.000
+                  </div>
                 </div>
-              </CardContent>
-            </Card>
-          )}
+              </div>
 
-          <div className="mt-6 p-4 rounded-lg border">
-            <h3 className="font-semibold mb-2">🏆 Premios del Torneo</h3>
-            <div className="text-sm space-y-1">
-              <div>
-                🥇 <strong>1er Lugar:</strong> $50.000 + Trofeo
+              <div className="mt-4 p-4 rounded-lg bg-blue-50 border border-blue-200">
+                <h3 className="font-semibold text-blue-900 mb-2">📊 Cómo se calcula el puntaje</h3>
+                <div className="text-sm text-blue-800 space-y-1">
+                  <div>• <strong>Resultado exacto:</strong> 3 puntos</div>
+                  <div>• <strong>Ganador correcto:</strong> 1 punto</div>
+                  <div>• <strong>Resultado incorrecto:</strong> 0 puntos</div>
+                  <p className="text-xs mt-2 text-blue-700">
+                    En caso de empate en puntos, se prioriza por predicciones exactas, luego por predicciones parciales.
+                  </p>
+                </div>
               </div>
-              <div>
-                🥈 <strong>2do Lugar:</strong> $30.000
-              </div>
-              <div>
-                🥉 <strong>3er Lugar:</strong> $20.000
-              </div>
-            </div>
+            </main>
           </div>
-
-          <div className="mt-4 p-4 rounded-lg bg-blue-50 border border-blue-200">
-            <h3 className="font-semibold text-blue-900 mb-2">📊 Cómo se calcula el puntaje</h3>
-            <div className="text-sm text-blue-800 space-y-1">
-              <div>• <strong>Resultado exacto:</strong> 3 puntos</div>
-              <div>• <strong>Ganador correcto:</strong> 1 punto</div>
-              <div>• <strong>Resultado incorrecto:</strong> 0 puntos</div>
-              <p className="text-xs mt-2 text-blue-700">
-                En caso de empate en puntos, se prioriza por predicciones exactas, luego por predicciones parciales.
-              </p>
-            </div>
-          </div>
-        </main>
+        </div>
       </div>
     )
-
   } catch (error) {
     console.error('Error fetching ranking data:', error);
 
