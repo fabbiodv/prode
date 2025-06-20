@@ -42,6 +42,8 @@ export default async function Home() {
           <div className="w-full max-w-5xl flex justify-between items-center p-3 px-5 text-sm">
             <div className="flex gap-5 items-center font-semibold">
               <Link href={"/"}>Prode Flujin</Link>
+              <Link href={"/mi-prode"} className="">Mi Prode</Link>
+              <Link href={"/ranking"} className="">Ranking</Link>
             </div>
             {!hasEnvVars ? <EnvVarWarning /> : <AuthButton />}
           </div>
