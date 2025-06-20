@@ -44,6 +44,7 @@ export default async function Home() {
             <div className="flex gap-5 items-center font-semibold">
               <Link href={"/"}>Prode Flujin</Link>
               <Link href={"/mi-prode"} className="">Mi Prode</Link>
+              <Link href={"/ranking"} className="">Ranking</Link>
             </div>
             {!hasEnvVars ? <EnvVarWarning /> : <AuthButton />}
           </div>

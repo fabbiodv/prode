@@ -51,7 +51,7 @@ function calculatePoints(prediction: Prediction, match: Match): { points: number
   // Ganador correcto: 1 punto
   const predWinner = predHome > predAway ? 'home' : predHome < predAway ? 'away' : 'draw';
   const realWinner = realHome > realAway ? 'home' : realHome < realAway ? 'away' : 'draw';
-  
+
   if (predWinner === realWinner) {
     return { points: 1, type: 'winner' };
   }
@@ -76,7 +76,7 @@ function getResultIcon(type: string) {
 function getResultBadge(type: string, points: number) {
   const variants = {
     exact: "bg-green-100 text-green-800 border-green-200",
-    winner: "bg-yellow-100 text-yellow-800 border-yellow-200", 
+    winner: "bg-yellow-100 text-yellow-800 border-yellow-200",
     wrong: "bg-red-100 text-red-800 border-red-200",
     pending: "bg-gray-100 text-gray-600 border-gray-200"
   };
@@ -97,10 +97,10 @@ function getResultBadge(type: string, points: number) {
 
 export default async function MiProdePage() {
   const supabase = await createClient();
-  
+
   // Verificar autenticación
   const { data: { user }, error: authError } = await supabase.auth.getUser();
-  
+
   if (authError || !user) {
     redirect("/auth/login");
   }
@@ -128,7 +128,7 @@ export default async function MiProdePage() {
   // Combinar partidos con predicciones y calcular puntos
   const matchesWithPredictions: MatchWithPrediction[] = (matches || []).map(match => {
     const prediction = (predictions || []).find(p => p.match_id === match.id);
-    
+
     if (prediction) {
       const { points, type } = calculatePoints(prediction, match);
       return {
@@ -138,7 +138,7 @@ export default async function MiProdePage() {
         result_type: type
       };
     }
-    
+
     return match;
   });
 
@@ -154,7 +154,7 @@ export default async function MiProdePage() {
     const date = new Date(dateString);
     return date.toLocaleDateString("es-ES", {
       weekday: "short",
-      day: "numeric", 
+      day: "numeric",
       month: "short",
       hour: "2-digit",
       minute: "2-digit"
@@ -169,131 +169,132 @@ export default async function MiProdePage() {
             <div className="flex gap-5 items-center font-semibold">
               <Link href={"/"}>Prode Flujin</Link>
               <Link href={"/mi-prode"} className=" border rounded-full px-2 py-1">Mi Prode</Link>
+              <Link href={"/ranking"} className="">Ranking</Link>
             </div>
             {!hasEnvVars ? <EnvVarWarning /> : <AuthButton />}
           </div>
         </nav>
         <div className="flex-1 flex flex-col gap-20 max-w-5xl p-5">
           <main className="container mx-auto px-4 py-6">
-        <div className="mb-8">
-          <h1 className="text-3xl font-bold  mb-2 flex items-center space-x-2">
-            <Trophy className="h-8 w-8 text-yellow-600" />
-            <span>Mi Prode</span>
-          </h1>
-          <p className="">Mis predicciones y resultados del Mundial de Clubes 2025</p>
-        </div>
+            <div className="mb-8">
+              <h1 className="text-3xl font-bold  mb-2 flex items-center space-x-2">
+                <Trophy className="h-8 w-8 text-yellow-600" />
+                <span>Mi Prode</span>
+              </h1>
+              <p className="">Mis predicciones y resultados del Mundial de Clubes 2025</p>
+            </div>
 
-        {/* Estadísticas */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
-          <Card>
-            <CardContent className="p-4 text-center">
-              <div className="text-2xl font-bold text-blue-600">{totalPoints}</div>
-              <div className="text-sm ">Puntos Totales</div>
-            </CardContent>
-          </Card>
-          <Card>
-            <CardContent className="p-4 text-center">
-              <div className="text-2xl font-bold text-green-600">{exactPredictions}</div>
-              <div className="text-sm ">Resultados Exactos</div>
-            </CardContent>
-          </Card>
-          <Card>
-            <CardContent className="p-4 text-center">
-              <div className="text-2xl font-bold text-yellow-600">{winnerPredictions}</div>
-              <div className="text-sm ">Ganadores Correctos</div>
-            </CardContent>
-          </Card>
-          <Card>
-            <CardContent className="p-4 text-center">
-              <div className="text-2xl font-bold text-slate-600">{totalPredictions}</div>
-              <div className="text-sm ">Predicciones Hechas</div>
-            </CardContent>
-          </Card>
-        </div>
+            {/* Estadísticas */}
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+              <Card>
+                <CardContent className="p-4 text-center">
+                  <div className="text-2xl font-bold text-blue-600">{totalPoints}</div>
+                  <div className="text-sm ">Puntos Totales</div>
+                </CardContent>
+              </Card>
+              <Card>
+                <CardContent className="p-4 text-center">
+                  <div className="text-2xl font-bold text-green-600">{exactPredictions}</div>
+                  <div className="text-sm ">Resultados Exactos</div>
+                </CardContent>
+              </Card>
+              <Card>
+                <CardContent className="p-4 text-center">
+                  <div className="text-2xl font-bold text-yellow-600">{winnerPredictions}</div>
+                  <div className="text-sm ">Ganadores Correctos</div>
+                </CardContent>
+              </Card>
+              <Card>
+                <CardContent className="p-4 text-center">
+                  <div className="text-2xl font-bold text-slate-600">{totalPredictions}</div>
+                  <div className="text-sm ">Predicciones Hechas</div>
+                </CardContent>
+              </Card>
+            </div>
 
-        {/* Lista de partidos */}
-        <div className="space-y-4">
-          {matchesWithPredictions.map((match) => (
-            <Card key={match.id} className="hover:shadow-md transition-shadow">
-              <CardHeader className="pb-3">
-                <div className="flex items-center justify-between">
-                  <Badge variant="secondary" className="text-xs">
-                    {match.stage}
-                  </Badge>
-                  <div className="flex items-center space-x-2">
-                    {match.prediction && match.result_type && (
-                      <>
-                        {getResultIcon(match.result_type)}
-                        {getResultBadge(match.result_type, match.points || 0)}
-                      </>
-                    )}
-                  </div>
-                  <div className="text-sm ">
-                    {formatDate(match.match_date)}
-                  </div>
-                </div>
-              </CardHeader>
-
-              <CardContent>
-                <div className="space-y-4">
-                  {/* Equipos */}
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center space-x-3 flex-1">
-                      <span className="font-semibold ">{match.home_team}</span>
-                    </div>
-                    <div className="text-center">
-                      <div className="text-sm  mb-1">vs</div>
-                    </div>
-                    <div className="flex items-center space-x-3 flex-1 justify-end">
-                      <span className="font-semibold ">{match.away_team}</span>
-                    </div>
-                  </div>
-
-                  {/* Resultado Real */}
-                  {match.home_score !== null && match.away_score !== null && (
-                    <div className="border border-gray-200 rounded-lg p-3">
-                      <div className="text-xs  mb-2 text-center">Resultado Real</div>
-                      <div className="flex items-center justify-center space-x-4">
-                        <div className="text-xl font-bold ">{match.home_score}</div>
-                        <span className="">-</span>
-                        <div className="text-xl font-bold ">{match.away_score}</div>
+            {/* Lista de partidos */}
+            <div className="space-y-4">
+              {matchesWithPredictions.map((match) => (
+                <Card key={match.id} className="hover:shadow-md transition-shadow">
+                  <CardHeader className="pb-3">
+                    <div className="flex items-center justify-between">
+                      <Badge variant="secondary" className="text-xs">
+                        {match.stage}
+                      </Badge>
+                      <div className="flex items-center space-x-2">
+                        {match.prediction && match.result_type && (
+                          <>
+                            {getResultIcon(match.result_type)}
+                            {getResultBadge(match.result_type, match.points || 0)}
+                          </>
+                        )}
+                      </div>
+                      <div className="text-sm ">
+                        {formatDate(match.match_date)}
                       </div>
                     </div>
-                  )}
+                  </CardHeader>
 
-                  {/* Mi Predicción */}
-                  {match.prediction ? (
-                    <div className="border border-blue-200 rounded-lg p-3">
-                      <div className="text-xs  mb-2 text-center">Mi Predicción</div>
-                      <div className="flex items-center justify-center space-x-4">
-                        <div className="text-xl font-bold ">{match.prediction.predicted_home_score}</div>
-                        <span className="">-</span>
-                        <div className="text-xl font-bold ">{match.prediction.predicted_away_score}</div>
+                  <CardContent>
+                    <div className="space-y-4">
+                      {/* Equipos */}
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center space-x-3 flex-1">
+                          <span className="font-semibold ">{match.home_team}</span>
+                        </div>
+                        <div className="text-center">
+                          <div className="text-sm  mb-1">vs</div>
+                        </div>
+                        <div className="flex items-center space-x-3 flex-1 justify-end">
+                          <span className="font-semibold ">{match.away_team}</span>
+                        </div>
                       </div>
-                    </div>
-                  ) : (
-                    <div className="bg-gray-50 rounded-lg p-3 text-center">
-                      <div className="text-sm text-gray-600">No hiciste predicción para este partido</div>
-                    </div>
-                  )}
-                </div>
-              </CardContent>
-            </Card>
-          ))}
-        </div>
 
-        {/* Información de puntaje */}
-        <div className="mt-8 p-6 bg-blue-50 rounded-lg border border-blue-200">
-          <h3 className="font-semibold text-blue-900 mb-2">📋 Sistema de Puntaje</h3>
-          <ul className="text-sm text-blue-800 space-y-1">
-            <li>• <strong>Resultado exacto:</strong> 3 puntos</li>
-            <li>• <strong>Ganador correcto:</strong> 1 punto</li>
-            <li>• <strong>Resultado incorrecto:</strong> 0 puntos</li>
-          </ul>
-                 </div>
-       </main>
-     </div>
-   </div>
- </div>
-   );
- }
+                      {/* Resultado Real */}
+                      {match.home_score !== null && match.away_score !== null && (
+                        <div className="border border-gray-200 rounded-lg p-3">
+                          <div className="text-xs  mb-2 text-center">Resultado Real</div>
+                          <div className="flex items-center justify-center space-x-4">
+                            <div className="text-xl font-bold ">{match.home_score}</div>
+                            <span className="">-</span>
+                            <div className="text-xl font-bold ">{match.away_score}</div>
+                          </div>
+                        </div>
+                      )}
+
+                      {/* Mi Predicción */}
+                      {match.prediction ? (
+                        <div className="border border-blue-200 rounded-lg p-3">
+                          <div className="text-xs  mb-2 text-center">Mi Predicción</div>
+                          <div className="flex items-center justify-center space-x-4">
+                            <div className="text-xl font-bold ">{match.prediction.predicted_home_score}</div>
+                            <span className="">-</span>
+                            <div className="text-xl font-bold ">{match.prediction.predicted_away_score}</div>
+                          </div>
+                        </div>
+                      ) : (
+                        <div className="bg-gray-50 rounded-lg p-3 text-center">
+                          <div className="text-sm text-gray-600">No hiciste predicción para este partido</div>
+                        </div>
+                      )}
+                    </div>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+
+            {/* Información de puntaje */}
+            <div className="mt-8 p-6 bg-blue-50 rounded-lg border border-blue-200">
+              <h3 className="font-semibold text-blue-900 mb-2">📋 Sistema de Puntaje</h3>
+              <ul className="text-sm text-blue-800 space-y-1">
+                <li>• <strong>Resultado exacto:</strong> 3 puntos</li>
+                <li>• <strong>Ganador correcto:</strong> 1 punto</li>
+                <li>• <strong>Resultado incorrecto:</strong> 0 puntos</li>
+              </ul>
+            </div>
+          </main>
+        </div>
+      </div>
+    </div>
+  );
+}
