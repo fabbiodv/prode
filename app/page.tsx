@@ -24,8 +24,9 @@ export default async function Home() {
 
   // Obtener partidos desde Supabase
   const { data: matchesData, error } = await supabase
-  .from('matches')
-  .select('*')
+    .from('matches')
+    .select('*')
+    .order('match_date', { ascending: true })
 
   if (error) {
     console.error('Error fetching matches:', error);

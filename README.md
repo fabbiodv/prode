@@ -1,105 +1,138 @@
-<a href="https://demo-nextjs-with-supabase.vercel.app/">
-  <img alt="Next.js and Supabase Starter Kit - the fastest way to build apps with Next.js and Supabase" src="https://demo-nextjs-with-supabase.vercel.app/opengraph-image.png">
-  <h1 align="center">Next.js and Supabase Starter Kit</h1>
-</a>
+# 🏆 Prode Flujin - Mundial de Clubes 2025
 
-<p align="center">
- The fastest way to build apps with Next.js and Supabase
-</p>
+Una aplicación web de predicciones deportivas para el Mundial de Clubes FIFA 2025, donde los usuarios pueden hacer sus pronósticos sobre los partidos y competir por puntos.
 
-<p align="center">
-  <a href="#features"><strong>Features</strong></a> ·
-  <a href="#demo"><strong>Demo</strong></a> ·
-  <a href="#deploy-to-vercel"><strong>Deploy to Vercel</strong></a> ·
-  <a href="#clone-and-run-locally"><strong>Clone and run locally</strong></a> ·
-  <a href="#feedback-and-issues"><strong>Feedback and issues</strong></a>
-  <a href="#more-supabase-examples"><strong>More Examples</strong></a>
-</p>
-<br/>
+## ✨ Características
 
-## Features
+- 🔮 **Predicciones de partidos**: Predice el resultado de todos los partidos del Mundial de Clubes 2025
+- 📊 **Sistema de puntuación**: 
+  - 3 puntos por resultado exacto
+  - 1 punto por acertar el ganador
+  - 0 puntos por resultado incorrecto
+- 👤 **Autenticación segura**: Sistema de usuarios con Supabase Auth
+- 📱 **Diseño responsivo**: Interfaz optimizada para móviles y escritorio
+- 🌙 **Modo oscuro**: Cambia entre tema claro y oscuro
+- 📈 **Estadísticas personales**: Revisa tus predicciones y puntuación total
 
-- Works across the entire [Next.js](https://nextjs.org) stack
-  - App Router
-  - Pages Router
-  - Middleware
-  - Client
-  - Server
-  - It just works!
-- supabase-ssr. A package to configure Supabase Auth to use cookies
-- Password-based authentication block installed via the [Supabase UI Library](https://supabase.com/ui/docs/nextjs/password-based-auth)
-- Styling with [Tailwind CSS](https://tailwindcss.com)
-- Components with [shadcn/ui](https://ui.shadcn.com/)
-- Optional deployment with [Supabase Vercel Integration and Vercel deploy](#deploy-your-own)
-  - Environment variables automatically assigned to Vercel project
+## 🚀 Tecnologías
 
-## Demo
+- **Frontend**: Next.js 15, React 19, TypeScript
+- **Estilos**: Tailwind CSS, Radix UI
+- **Backend**: Supabase (Base de datos + Autenticación)
+- **Desarrollo**: Turbopack, ESLint
 
-You can view a fully working demo at [demo-nextjs-with-supabase.vercel.app](https://demo-nextjs-with-supabase.vercel.app/).
+## 📋 Requisitos Previos
 
-## Deploy to Vercel
+- Node.js 18.0 o superior
+- npm o yarn
+- Cuenta de Supabase
 
-Vercel deployment will guide you through creating a Supabase account and project.
+## 🛠️ Instalación
 
-After installation of the Supabase integration, all relevant environment variables will be assigned to the project so the deployment is fully functioning.
+1. **Clona el repositorio**
+```bash
+git clone <url-del-repositorio>
+cd prode
+```
 
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fvercel%2Fnext.js%2Ftree%2Fcanary%2Fexamples%2Fwith-supabase&project-name=nextjs-with-supabase&repository-name=nextjs-with-supabase&demo-title=nextjs-with-supabase&demo-description=This+starter+configures+Supabase+Auth+to+use+cookies%2C+making+the+user%27s+session+available+throughout+the+entire+Next.js+app+-+Client+Components%2C+Server+Components%2C+Route+Handlers%2C+Server+Actions+and+Middleware.&demo-url=https%3A%2F%2Fdemo-nextjs-with-supabase.vercel.app%2F&external-id=https%3A%2F%2Fgithub.com%2Fvercel%2Fnext.js%2Ftree%2Fcanary%2Fexamples%2Fwith-supabase&demo-image=https%3A%2F%2Fdemo-nextjs-with-supabase.vercel.app%2Fopengraph-image.png)
+2. **Instala las dependencias**
+```bash
+npm install
+```
 
-The above will also clone the Starter kit to your GitHub, you can clone that locally and develop locally.
+3. **Configura las variables de entorno**
+Crea un archivo `.env.local` en la raíz del proyecto:
+```env
+NEXT_PUBLIC_SUPABASE_URL=tu_supabase_url
+NEXT_PUBLIC_SUPABASE_ANON_KEY=tu_supabase_anon_key
+```
 
-If you wish to just develop locally and not deploy to Vercel, [follow the steps below](#clone-and-run-locally).
+4. **Inicia el servidor de desarrollo**
+```bash
+npm run dev
+```
 
-## Clone and run locally
+La aplicación estará disponible en `http://localhost:3000`
 
-1. You'll first need a Supabase project which can be made [via the Supabase dashboard](https://database.new)
+## 🗂️ Estructura del Proyecto
 
-2. Create a Next.js app using the Supabase Starter template npx command
+```
+prode/
+├── app/                    # App Router de Next.js
+│   ├── api/               # API routes
+│   ├── auth/              # Páginas de autenticación
+│   ├── mi-prode/          # Página de estadísticas personales
+│   └── page.tsx           # Página principal
+├── components/            # Componentes reutilizables
+│   ├── ui/                # Componentes de UI (Radix + Tailwind)
+│   └── ...
+├── lib/                   # Utilidades y configuraciones
+│   ├── supabase/          # Cliente de Supabase
+│   └── utils.ts           # Funciones utilitarias
+└── ...
+```
 
-   ```bash
-   npx create-next-app --example with-supabase with-supabase-app
-   ```
+## 📊 Base de Datos
 
-   ```bash
-   yarn create next-app --example with-supabase with-supabase-app
-   ```
+El proyecto utiliza Supabase con las siguientes tablas principales:
 
-   ```bash
-   pnpm create next-app --example with-supabase with-supabase-app
-   ```
+### `matches`
+- `id`: ID único del partido
+- `home_team`: Equipo local
+- `away_team`: Equipo visitante
+- `home_score`: Goles del equipo local
+- `away_score`: Goles del equipo visitante
+- `match_date`: Fecha y hora del partido
+- `stage`: Fase del torneo
 
-3. Use `cd` to change into the app's directory
+### `predictions`
+- `id`: ID único de la predicción
+- `user_id`: ID del usuario
+- `match_id`: ID del partido
+- `predicted_home_score`: Goles predichos para el equipo local
+- `predicted_away_score`: Goles predichos para el equipo visitante
+- `created_at`: Fecha de creación
 
-   ```bash
-   cd with-supabase-app
-   ```
+## 🎮 Cómo Usar
 
-4. Rename `.env.example` to `.env.local` and update the following:
+1. **Regístrate o inicia sesión** en la aplicación
+2. **Explora los partidos** disponibles en la página principal
+3. **Haz tus predicciones** clickeando en cada partido
+4. **Revisa tus estadísticas** en la sección "Mi Prode"
+5. **Compite** con otros usuarios por la mayor puntuación
 
-   ```
-   NEXT_PUBLIC_SUPABASE_URL=[INSERT SUPABASE PROJECT URL]
-   NEXT_PUBLIC_SUPABASE_ANON_KEY=[INSERT SUPABASE PROJECT API ANON KEY]
-   ```
+## 🚀 Scripts Disponibles
 
-   Both `NEXT_PUBLIC_SUPABASE_URL` and `NEXT_PUBLIC_SUPABASE_ANON_KEY` can be found in [your Supabase project's API settings](https://supabase.com/dashboard/project/_?showConnect=true)
+```bash
+# Desarrollo con Turbopack
+npm run dev
 
-5. You can now run the Next.js local development server:
+# Construir para producción
+npm run build
 
-   ```bash
-   npm run dev
-   ```
+# Iniciar servidor de producción
+npm start
 
-   The starter kit should now be running on [localhost:3000](http://localhost:3000/).
+# Linting
+npm run lint
+```
 
-6. This template comes with the default shadcn/ui style initialized. If you instead want other ui.shadcn styles, delete `components.json` and [re-install shadcn/ui](https://ui.shadcn.com/docs/installation/next)
+## 🤝 Contribuir
 
-> Check out [the docs for Local Development](https://supabase.com/docs/guides/getting-started/local-development) to also run Supabase locally.
+1. Fork el proyecto
+2. Crea una rama para tu feature (`git checkout -b feature/nueva-caracteristica`)
+3. Commit tus cambios (`git commit -am 'Agrega nueva característica'`)
+4. Push a la rama (`git push origin feature/nueva-caracteristica`)
+5. Abre un Pull Request
 
-## Feedback and issues
+## 📄 Licencia
 
-Please file feedback and issues over on the [Supabase GitHub org](https://github.com/supabase/supabase/issues/new/choose).
+Este proyecto es de uso personal. 
 
-## More Supabase examples
+## 👨‍💻 Autor
 
-- [Next.js Subscription Payments Starter](https://github.com/vercel/nextjs-subscription-payments)
-- [Cookie-based Auth and the Next.js 13 App Router (free course)](https://youtube.com/playlist?list=PL5S4mPUpp4OtMhpnp93EFSo42iQ40XjbF)
-- [Supabase Auth and the Next.js App Router](https://github.com/supabase/supabase/tree/master/examples/auth/nextjs)
+**Fabio Mazzarella**
+
+---
+
+¡Disfruta haciendo tus predicciones y que gane el mejor! 🏆
