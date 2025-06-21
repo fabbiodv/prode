@@ -7,6 +7,7 @@ import { Input } from "@/components/ui/input"
 import { Badge } from "@/components/ui/badge"
 import { Save, Check } from "lucide-react"
 import { createClient } from "@/lib/supabase/client"
+import { toast } from "sonner"
 
 interface Match {
   id: number
@@ -112,6 +113,7 @@ export function MatchCard({ match, userId, showPredictionForm = true }: MatchCar
           if (result.error?.includes('en curso') || result.error?.includes('terminado')) {
             // Forzar re-render para actualizar el estado del partido
             //window.location.reload()
+            toast.error(result.error)
           }
         } else {
           setSaved(true)
@@ -212,8 +214,8 @@ export function MatchCard({ match, userId, showPredictionForm = true }: MatchCar
           <div className="flex flex-col items-center space-y-2">
             {!matchStatus.canPredict && (
               <div className={`text-xs px-3 py-1 rounded-full border ${matchStatus.status === 'in_progress'
-                  ? 'text-amber-600 bg-amber-50 border-amber-200'
-                  : 'text-red-600 bg-red-50 border-red-200'
+                ? 'text-amber-600 bg-amber-50 border-amber-200'
+                : 'text-red-600 bg-red-50 border-red-200'
                 }`}>
                 {matchStatus.status === 'in_progress'
                   ? '⚽ Partido en curso - No se pueden modificar predicciones'

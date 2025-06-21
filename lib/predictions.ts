@@ -9,7 +9,7 @@ export interface PredictionData {
 
 export async function savePrediction(predictionData: PredictionData) {
   const supabase = await createClient();
-  
+
   // Primero verificar si el partido ya comenzó
   const { data: match, error: matchError } = await supabase
     .from('matches')
@@ -26,6 +26,7 @@ export async function savePrediction(predictionData: PredictionData) {
   const timeDifferenceMs = now.getTime() - matchDateTime.getTime();
   const timeDifferenceHours = timeDifferenceMs / (1000 * 60 * 60);
 
+  /*
   if (timeDifferenceHours >= 0) {
     if (timeDifferenceHours <= 2) {
       return { error: 'No se pueden guardar predicciones durante el partido (en curso)' };
@@ -33,7 +34,7 @@ export async function savePrediction(predictionData: PredictionData) {
       return { error: 'No se pueden guardar predicciones después del partido (terminado)' };
     }
   }
-
+  */
   // Verificar si ya existe una predicción
   const { data: existingPrediction } = await supabase
     .from('predictions')
@@ -52,7 +53,7 @@ export async function savePrediction(predictionData: PredictionData) {
       })
       .eq('id', existingPrediction.id)
       .select();
-    
+
     return result.error ? { error: result.error.message } : { data: result.data };
   } else {
     // Crear nueva predicción
@@ -60,14 +61,14 @@ export async function savePrediction(predictionData: PredictionData) {
       .from('predictions')
       .insert([predictionData])
       .select();
-    
+
     return result.error ? { error: result.error.message } : { data: result.data };
   }
 }
 
 export async function getPrediction(userId: string, matchId: number) {
   const supabase = await createClient();
-  
+
   const { data, error } = await supabase
     .from('predictions')
     .select('*')
