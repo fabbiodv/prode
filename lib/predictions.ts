@@ -11,7 +11,7 @@ export async function savePrediction(predictionData: PredictionData) {
   const supabase = await createClient();
 
   // Primero verificar si el partido ya comenzó
-  const { data: match, error: matchError } = await supabase
+  /*const { data: match, error: matchError } = await supabase
     .from('matches')
     .select('match_date')
     .eq('id', predictionData.match_id)
@@ -19,12 +19,12 @@ export async function savePrediction(predictionData: PredictionData) {
 
   if (matchError) {
     return { error: 'Partido no encontrado' };
-  }
+  }*/
 
-  const matchDateTime = new Date(match.match_date);
-  const now = new Date();
-  const timeDifferenceMs = now.getTime() - matchDateTime.getTime();
-  const timeDifferenceHours = timeDifferenceMs / (1000 * 60 * 60);
+  //const matchDateTime = new Date(match.match_date);
+  //const now = new Date();
+  //const timeDifferenceMs = now.getTime() - matchDateTime.getTime();
+  //const timeDifferenceHours = timeDifferenceMs / (1000 * 60 * 60);
 
   /*
   if (timeDifferenceHours >= 0) {
