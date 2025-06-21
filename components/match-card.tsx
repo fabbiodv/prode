@@ -90,7 +90,7 @@ export function MatchCard({ match, userId, showPredictionForm = true }: MatchCar
       }
 
       setIsLoading(true)
-      
+
       try {
         const response = await fetch('/api/predictions', {
           method: 'POST',
@@ -111,12 +111,12 @@ export function MatchCard({ match, userId, showPredictionForm = true }: MatchCar
           // Si el error es porque el partido ya comenzó o terminó, actualizar el estado
           if (result.error?.includes('en curso') || result.error?.includes('terminado')) {
             // Forzar re-render para actualizar el estado del partido
-            window.location.reload()
+            //window.location.reload()
           }
         } else {
           setSaved(true)
           setTimeout(() => setSaved(false), 2000)
-          
+
           // Recargar la predicción existente
           const { data } = await supabase
             .from('predictions')
@@ -124,7 +124,7 @@ export function MatchCard({ match, userId, showPredictionForm = true }: MatchCar
             .eq('user_id', userId)
             .eq('match_id', match.id)
             .single()
-          
+
           if (data) {
             setExistingPrediction(data)
           }
@@ -211,12 +211,11 @@ export function MatchCard({ match, userId, showPredictionForm = true }: MatchCar
         {showPredictionForm && (
           <div className="flex flex-col items-center space-y-2">
             {!matchStatus.canPredict && (
-              <div className={`text-xs px-3 py-1 rounded-full border ${
-                matchStatus.status === 'in_progress' 
-                  ? 'text-amber-600 bg-amber-50 border-amber-200' 
+              <div className={`text-xs px-3 py-1 rounded-full border ${matchStatus.status === 'in_progress'
+                  ? 'text-amber-600 bg-amber-50 border-amber-200'
                   : 'text-red-600 bg-red-50 border-red-200'
-              }`}>
-                {matchStatus.status === 'in_progress' 
+                }`}>
+                {matchStatus.status === 'in_progress'
                   ? '⚽ Partido en curso - No se pueden modificar predicciones'
                   : '🏁 Partido terminado - No se pueden modificar predicciones'
                 }
