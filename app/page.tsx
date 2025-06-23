@@ -22,10 +22,14 @@ export default async function Home() {
     data: { user },
   } = await supabase.auth.getUser();
 
-  // Obtener partidos desde Supabase
+  // Obtener solo partidos futuros desde Supabase (ajustado a UTC-3)
+  const currentDate = new Date();
+  currentDate.setHours(currentDate.getHours() - 3);
+
   const { data: matchesData, error } = await supabase
     .from('matches')
     .select('*')
+    .gte('match_date', currentDate.toISOString())
     .order('match_date', { ascending: true })
 
   if (error) {
