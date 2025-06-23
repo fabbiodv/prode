@@ -34,8 +34,6 @@ export default async function Home() {
 
   if (error) {
     console.error('Error fetching matches:', error);
-  } else {
-    console.log(matchesData)
   }
 
   const matches: Match[] = matchesData || [];
